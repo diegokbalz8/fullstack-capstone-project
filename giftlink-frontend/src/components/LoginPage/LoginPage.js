@@ -11,14 +11,15 @@ import './LoginPage.css';
 function LoginPage() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    //Step 1 - Task 4
+    //Step 1 - Task 4 - Include a state for incorrect password.
     const [incorrect, setIncorrect] = useState('');
     //Step 1 - Task 5
     const navigate = useNavigate();
     const bearerToken = sessionStorage.getItem('bearer-token');
     const { setIsLoggedIn } = useAppContext();
 
-    //Step 1 - Task 6
+    // Step 1 - Task 6
+    // If the bearerToken has a value (user already logged in), navigate to MainPage
     useEffect(() => {
         if (sessionStorage.getItem('auth-token')) {
           navigate('/app')
@@ -32,7 +33,7 @@ function LoginPage() {
             //Step 1 - Task 7
             method: 'POST',
             //Step 1 - Task 8
-          headers: {
+            headers: {
             'content-type': 'application/json',
             'Authorization': bearerToken ? `Bearer ${bearerToken}` : '', // Include Bearer token if available
           },
@@ -43,15 +44,15 @@ function LoginPage() {
           })
         });
 
-        //Step 2: Task 1
+        //Step 2: Task 1 - Access data in JSON format as a response from the back end
         const json = await res.json();
         console.log('Json',json);
         if (json.authtoken) {
-            //Step 2: Task 2
+            //Step 2: Task 2 - Set user details in session storage
           sessionStorage.setItem('auth-token', json.authtoken);
           sessionStorage.setItem('name', json.userName);
           sessionStorage.setItem('email', json.userEmail);
-            //Step 2: Task 3
+            //Step 2: Task 3 - Set the user's state to log in using the useAppContext
           setIsLoggedIn(true);
             //Step 2: Task 4
           navigate('/app');
